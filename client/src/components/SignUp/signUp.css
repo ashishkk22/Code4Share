@@ -1,0 +1,19 @@
+.mainDiv{
+    display: flex;
+    flex-direction: column;
+    justify-content: center;
+    align-items: center;
+}
+.signup-container{
+    background-color: #282a36;
+          height: 90vh;
+          display: flex;
+          justify-content: center;
+          align-items: center;
+}
+.formDiv{
+    display: flex;
+    flex-direction: column;
+    justify-content: center;
+    align-items: center;
+}

@@ -1,0 +1,23 @@
+.playGroundWrapper{
+    display: flex;
+    flex-direction: column;
+    align-items: center;
+    justify-content: center;
+    width: 70%;
+    height: 100%;
+}
+.center-div{
+    display: flex;
+    justify-content: center;
+    align-items: center;
+}
+.heading{
+    color: #ffce6d;
+    margin-top: 30px;
+}
+.modal_center{
+    width: 96%;
+    height: 100%;
+    margin-left: 10px;
+    margin-right:10px;
+}
