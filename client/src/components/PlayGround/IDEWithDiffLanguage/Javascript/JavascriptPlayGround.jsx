@@ -6,21 +6,23 @@ import {
   useNavigate,
   useParams,
 } from "react-router-dom";
-import CppLanEditor from "./CppLanEditor";
-import "./CppPlayGround.css";
+import JavascriptLanEditor from "./JavascriptLanEditor";
 import SideDrawer from "../../../SideDrawer/SideDrawer";
 import ACTIONS from "../../../../Actions";
 import { initSocket } from "../../../../socket";
-import { initialCpp } from "../../initialValues";
+import { initialJavascript } from "../../initialValues";
 import useLocalStorage from "../../../../hooks/useLocalStorage";
-import "./CppPlayGround.css";
+import "./JavascriptPlayGround.css";
 import InputEditor from "./Ip_Op_Editor/InputEditor";
 import OutputEditor from "./Ip_Op_Editor/OutputEditor";
 import { useDispatch } from "react-redux";
 import { cppOutput } from "../../../../Redux/Features/compileSlice";
-const CppPlayGround = () => {
-  const [input, setInput] = useLocalStorage("inputCpp", "");
-  const [cpp, setCpp] = useLocalStorage("cpp", initialCpp);
+const JavascriptPlayGround = () => {
+  const [input, setInput] = useLocalStorage("inputJavascript", "");
+  const [javascript, setJavascript] = useLocalStorage(
+    "javascript",
+    initialJavascript
+  );
   // console.log("cpp basic code", cpp);
   const reactNavigate = useNavigate();
   const location = useLocation();
@@ -29,7 +31,7 @@ const CppPlayGround = () => {
   const socketRef = useRef(null);
   const [avatars, setAvatars] = useState([]);
   const handleSubmitCode = () => {
-    dispatch(cppOutput({ cpp, input }));
+    dispatch(cppOutput({ javascript, input }));
     // console.log("cpp code", cpp, input);
   };
   useEffect(() => {
@@ -55,19 +57,21 @@ const CppPlayGround = () => {
             toast.success(`${username} joined the room`);
           }
           setAvatars(clients);
-          const newCpp = JSON.parse(localStorage.getItem("code4sharecpp"));
-          const newCppInput = JSON.parse(
-            localStorage.getItem("code4shareinputCpp")
+          const newJavascript = JSON.parse(
+            localStorage.getItem("code4sharejavascript")
+          );
+          const newJavascriptInput = JSON.parse(
+            localStorage.getItem("code4shareinputJavascript")
           );
           socketRef.current.emit(ACTIONS.SYNC_CODE, {
             socketId,
-            code: newCpp,
-            lan: "cpp",
+            code: newJavascript,
+            lan: "javascript",
           });
           socketRef.current.emit(ACTIONS.SYNC_CODE, {
             socketId,
-            code: newCppInput,
-            lan: "inputCpp",
+            code: newJavascriptInput,
+            lan: "inputJavascript",
           });
         }
       );
@@ -96,9 +100,9 @@ const CppPlayGround = () => {
     <>
       <div>
         <div className="pane top-pane">
-          <CppLanEditor
-            value={cpp}
-            onChange={setCpp}
+          <JavascriptLanEditor
+            value={javascript}
+            onChange={setJavascript}
             socketRef={socketRef}
             roomId={roomId}
             onCodeSubmit={handleSubmitCode}
@@ -121,4 +125,4 @@ const CppPlayGround = () => {
   );
 };
 
-export default CppPlayGround;
+export default JavascriptPlayGround;

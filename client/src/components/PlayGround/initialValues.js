@@ -91,5 +91,29 @@ int main() {
 
     return 0;
 }`;
+let initialJava = `// Online Java Compiler
+// Use this editor to write, compile and run your Java code online
 
-export { initialHTML, initialCSS, initialJS, initialCpp };
+class HelloWorld {
+    public static void main(String[] args) {
+        System.out.println("Hello, World!"); 
+    }
+}`;
+let initialJavascript = `// Online Javascript Editor for free
+// Write, Edit and Run your Javascript code using JS Online Compiler
+    
+console.log("Welcome to Code4Share!");
+`;
+let initialPython = `# Online Python compiler (interpreter) to run Python online.
+# Write Python 3 code in this online editor and run it.
+print("Hello world")
+`;
+export {
+  initialHTML,
+  initialCSS,
+  initialJS,
+  initialCpp,
+  initialJava,
+  initialJavascript,
+  initialPython,
+};

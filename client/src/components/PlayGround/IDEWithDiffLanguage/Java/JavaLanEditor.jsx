@@ -7,11 +7,11 @@ import "codemirror/addon/edit/closebrackets";
 import { Controlled as ControlledEditor } from "react-codemirror2";
 import { useEffect } from "react";
 import ACTIONS from "../../../../Actions";
-import "./CppPlayGround.css";
+import "./JavaPlayGround.css";
 import { Button, Fab } from "@mui/material";
 import { PlayArrow } from "@mui/icons-material";
-const CppLanEditor = props => {
-  const lan = "cpp";
+const JavaLanEditor = props => {
+  const lan = "java";
   const { value, onChange, socketRef, roomId, onCodeSubmit } = props;
   const [sync, setSync] = useState([{ code: "" }, { origin: "" }]);
   const code = sync[0];
@@ -34,11 +34,11 @@ const CppLanEditor = props => {
       socketRef.current.on(
         ACTIONS.CODE_CHANGE,
         ({ code, origin, lan, Main }) => {
-          if (Main === "code4share" && lan === "cpp") {
+          if (Main === "code4share" && lan === "java") {
             onChange(code);
           }
           if (origin) {
-            if (code !== null && origin != "setValue" && lan === "cpp") {
+            if (code !== null && origin != "setValue" && lan === "java") {
               onChange(code);
             }
           }
@@ -52,7 +52,7 @@ const CppLanEditor = props => {
   return (
     <div className={`editor-container`}>
       <div className="center-div">
-        <div className="editor-tt">C++ PlayGround</div>
+        <div className="editor-tt">Java PlayGround</div>
         <Button
           variant="contained"
           sx={{
@@ -76,7 +76,7 @@ const CppLanEditor = props => {
         options={{
           lineWrapping: true,
           lint: true,
-          mode: "text/x-c++src",
+          mode: "text/x-java",
           lineNumbers: true,
           theme: "dracula",
           autoCloseTags: true,
@@ -92,4 +92,4 @@ const CppLanEditor = props => {
   );
 };
 
-export default CppLanEditor;
+export default JavaLanEditor;

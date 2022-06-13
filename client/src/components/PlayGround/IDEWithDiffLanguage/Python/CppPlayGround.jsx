@@ -6,21 +6,20 @@ import {
   useNavigate,
   useParams,
 } from "react-router-dom";
-import CppLanEditor from "./CppLanEditor";
-import "./CppPlayGround.css";
+import PythonLanEditor from "./PythonLanEditor";
+import "./PythonPlayGround.css";
 import SideDrawer from "../../../SideDrawer/SideDrawer";
 import ACTIONS from "../../../../Actions";
 import { initSocket } from "../../../../socket";
-import { initialCpp } from "../../initialValues";
+import { initialPython } from "../../initialValues";
 import useLocalStorage from "../../../../hooks/useLocalStorage";
-import "./CppPlayGround.css";
 import InputEditor from "./Ip_Op_Editor/InputEditor";
 import OutputEditor from "./Ip_Op_Editor/OutputEditor";
 import { useDispatch } from "react-redux";
 import { cppOutput } from "../../../../Redux/Features/compileSlice";
-const CppPlayGround = () => {
-  const [input, setInput] = useLocalStorage("inputCpp", "");
-  const [cpp, setCpp] = useLocalStorage("cpp", initialCpp);
+const PythonPlayGround = () => {
+  const [input, setInput] = useLocalStorage("inputPython", "");
+  const [python, setPython] = useLocalStorage("python", initialPython);
   // console.log("cpp basic code", cpp);
   const reactNavigate = useNavigate();
   const location = useLocation();
@@ -29,7 +28,7 @@ const CppPlayGround = () => {
   const socketRef = useRef(null);
   const [avatars, setAvatars] = useState([]);
   const handleSubmitCode = () => {
-    dispatch(cppOutput({ cpp, input }));
+    dispatch(cppOutput({ python, input }));
     // console.log("cpp code", cpp, input);
   };
   useEffect(() => {
@@ -55,19 +54,21 @@ const CppPlayGround = () => {
             toast.success(`${username} joined the room`);
           }
           setAvatars(clients);
-          const newCpp = JSON.parse(localStorage.getItem("code4sharecpp"));
-          const newCppInput = JSON.parse(
-            localStorage.getItem("code4shareinputCpp")
+          const newPython = JSON.parse(
+            localStorage.getItem("code4sharepython")
+          );
+          const newPythonInput = JSON.parse(
+            localStorage.getItem("code4shareinputPython")
           );
           socketRef.current.emit(ACTIONS.SYNC_CODE, {
             socketId,
-            code: newCpp,
-            lan: "cpp",
+            code: newPython,
+            lan: "python",
           });
           socketRef.current.emit(ACTIONS.SYNC_CODE, {
             socketId,
-            code: newCppInput,
-            lan: "inputCpp",
+            code: newPythonInput,
+            lan: "inputPython",
           });
         }
       );
@@ -96,9 +97,9 @@ const CppPlayGround = () => {
     <>
       <div>
         <div className="pane top-pane">
-          <CppLanEditor
-            value={cpp}
-            onChange={setCpp}
+          <PythonLanEditor
+            value={python}
+            onChange={setPython}
             socketRef={socketRef}
             roomId={roomId}
             onCodeSubmit={handleSubmitCode}
@@ -121,4 +122,4 @@ const CppPlayGround = () => {
   );
 };
 
-export default CppPlayGround;
+export default PythonPlayGround;

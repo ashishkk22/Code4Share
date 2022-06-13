@@ -6,22 +6,21 @@ import {
   useNavigate,
   useParams,
 } from "react-router-dom";
-import CppLanEditor from "./CppLanEditor";
-import "./CppPlayGround.css";
+import JavaLanEditor from "./JavaLanEditor";
+import "./JavaPlayGround.css";
 import SideDrawer from "../../../SideDrawer/SideDrawer";
 import ACTIONS from "../../../../Actions";
 import { initSocket } from "../../../../socket";
-import { initialCpp } from "../../initialValues";
+import { initialJava } from "../../initialValues";
 import useLocalStorage from "../../../../hooks/useLocalStorage";
-import "./CppPlayGround.css";
+import "./JavaPlayGround.css";
 import InputEditor from "./Ip_Op_Editor/InputEditor";
 import OutputEditor from "./Ip_Op_Editor/OutputEditor";
 import { useDispatch } from "react-redux";
 import { cppOutput } from "../../../../Redux/Features/compileSlice";
-const CppPlayGround = () => {
-  const [input, setInput] = useLocalStorage("inputCpp", "");
-  const [cpp, setCpp] = useLocalStorage("cpp", initialCpp);
-  // console.log("cpp basic code", cpp);
+const JavaPlayGround = () => {
+  const [input, setInput] = useLocalStorage("inputJava", "");
+  const [java, setJava] = useLocalStorage("java", initialJava);
   const reactNavigate = useNavigate();
   const location = useLocation();
   const dispatch = useDispatch();
@@ -29,7 +28,7 @@ const CppPlayGround = () => {
   const socketRef = useRef(null);
   const [avatars, setAvatars] = useState([]);
   const handleSubmitCode = () => {
-    dispatch(cppOutput({ cpp, input }));
+    dispatch(cppOutput({ java, input }));
     // console.log("cpp code", cpp, input);
   };
   useEffect(() => {
@@ -55,19 +54,19 @@ const CppPlayGround = () => {
             toast.success(`${username} joined the room`);
           }
           setAvatars(clients);
-          const newCpp = JSON.parse(localStorage.getItem("code4sharecpp"));
-          const newCppInput = JSON.parse(
-            localStorage.getItem("code4shareinputCpp")
+          const newJava = JSON.parse(localStorage.getItem("code4sharejava"));
+          const newJavaInput = JSON.parse(
+            localStorage.getItem("code4shareinputJava")
           );
           socketRef.current.emit(ACTIONS.SYNC_CODE, {
             socketId,
-            code: newCpp,
-            lan: "cpp",
+            code: newJava,
+            lan: "java",
           });
           socketRef.current.emit(ACTIONS.SYNC_CODE, {
             socketId,
-            code: newCppInput,
-            lan: "inputCpp",
+            code: newJavaInput,
+            lan: "inputJava",
           });
         }
       );
@@ -96,9 +95,9 @@ const CppPlayGround = () => {
     <>
       <div>
         <div className="pane top-pane">
-          <CppLanEditor
-            value={cpp}
-            onChange={setCpp}
+          <JavaLanEditor
+            value={java}
+            onChange={setJava}
             socketRef={socketRef}
             roomId={roomId}
             onCodeSubmit={handleSubmitCode}
@@ -121,4 +120,4 @@ const CppPlayGround = () => {
   );
 };
 
-export default CppPlayGround;
+export default JavaPlayGround;

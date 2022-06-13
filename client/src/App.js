@@ -1,4 +1,3 @@
-import logo from "./logo.svg";
 import "./App.css";
 import Navbar from "./components/Navbar";
 import { ThemeProvider } from "@mui/material";
@@ -12,11 +11,10 @@ import CssBaseline from "@mui/material/CssBaseline";
 import PlayGround from "./components/PlayGround/WebEditor/PlayGroundWebEditor";
 import OptionPage from "./components/PlayGround/OptionPage/OptionPage";
 import { Toaster } from "react-hot-toast";
-import CppLanEditor from "./components/PlayGround/IDEWithDiffLanguage/CPP/CppLanEditor";
-import JavascriptLanguage from "./components/PlayGround/IDEWithDiffLanguage/Javascript/JavascriptLanguage";
-import JavaLanguage from "./components/PlayGround/IDEWithDiffLanguage/Java/JavaLanguage";
-import PythonLanguage from "./components/PlayGround/IDEWithDiffLanguage/Python/PythonLanguage";
 import CppPlayGround from "./components/PlayGround/IDEWithDiffLanguage/CPP/CppPlayGround";
+import JavaPlayGround from "./components/PlayGround/IDEWithDiffLanguage/Java/JavaPlayGround";
+import JavascriptPlayGround from "./components/PlayGround/IDEWithDiffLanguage/Javascript/JavascriptPlayGround";
+import PythonPlayGround from "./components/PlayGround/IDEWithDiffLanguage/Python/CppPlayGround";
 
 function App() {
   return (
@@ -44,10 +42,10 @@ function App() {
             <Route path="/IDEcpp/:roomId" element={<CppPlayGround />}></Route>
             <Route
               path="/IDEjs/:roomId"
-              element={<JavascriptLanguage />}
+              element={<JavascriptPlayGround />}
             ></Route>
-            <Route path="/IDEjava/:roomId" element={<JavaLanguage />}></Route>
-            <Route path="/IDEpy/:roomId" element={<PythonLanguage />}></Route>
+            <Route path="/IDEjava/:roomId" element={<JavaPlayGround />}></Route>
+            <Route path="/IDEpy/:roomId" element={<PythonPlayGround />}></Route>
           </Routes>
           <Footer />
         </BrowserRouter>

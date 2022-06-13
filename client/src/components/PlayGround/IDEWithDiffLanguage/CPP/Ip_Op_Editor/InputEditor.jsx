@@ -3,8 +3,9 @@ import "codemirror/lib/codemirror.css";
 import "codemirror/theme/dracula.css";
 import { Controlled as ControlledEditor } from "react-codemirror2";
 import { useEffect } from "react";
-import ACTIONS from "../../../../Actions";
+// import ACTIONS from "../../../../Actions";
 import "./Ip_Op_Editor.css";
+import ACTIONS from "../../../../../Actions";
 const InputEditor = props => {
   const lan = "inputCpp";
   const { value, onChange, socketRef, roomId } = props;
