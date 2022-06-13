@@ -10,7 +10,12 @@ const Footer = () => {
     >
       <Container
         maxWidth="lg"
-        sx={{ display: "flex", justifyContent: "center", alignItems: "center" }}
+        sx={{
+          display: "flex",
+          justifyContent: "center",
+          alignItems: "center",
+          textAlign: "center",
+        }}
       >
         <Typography>
           Build with 💖 by{" "}

@@ -12,7 +12,6 @@ import ACTIONS from "../../../Actions";
 const Editor = props => {
   const { language, displayName, value, onChange, socketRef, roomId } = props;
   const [sync, setSync] = useState([{ code: "" }, { origin: "" }]);
-  // console.log(sync[0]);
   const handleChange = (editor, data, value) => {
     onChange(value);
   };
@@ -33,7 +32,7 @@ const Editor = props => {
   useEffect(() => {
     if (socketRef.current) {
       socketRef.current.on(ACTIONS.CODE_CHANGE, ({ code, origin }) => {
-        if (code !== null && origin != "setValue") {
+        if (code !== null && origin !== "setValue") {
           onChange(code);
         }
       });
@@ -64,10 +63,6 @@ const Editor = props => {
           const { origin } = value;
           const code = editor.getValue();
           setSync([code, origin]);
-          // if (origin != "setValue") console.log(code);
-
-          // console.log("controlled", { value });
-          // console.log("controlled editor", { editor });
         }}
       />
     </div>

@@ -9,8 +9,8 @@ import "codemirror/addon/edit/closebrackets";
 import { Controlled as ControlledEditor } from "react-codemirror2";
 import { useEffect } from "react";
 import ACTIONS from "../../../../Actions";
+import "../PlayGround.css";
 const EditorCss = props => {
-  console.log("EditorCss");
   const lan = "css";
   const { value, onChange, socketRef, roomId } = props;
   const [sync, setSync] = useState([{ code: "" }, { origin: "" }]);
@@ -32,13 +32,19 @@ const EditorCss = props => {
   }, [sync[0]]);
   useEffect(() => {
     if (socketRef.current) {
-      socketRef.current.on(ACTIONS.CODE_CHANGE, ({ code, origin, lan }) => {
-        if (origin) {
-          if (code !== null && origin != "setValue" && lan === "css") {
+      socketRef.current.on(
+        ACTIONS.CODE_CHANGE,
+        ({ code, origin, lan, Main }) => {
+          if (Main === "code4share" && lan === "css") {
             onChange(code);
           }
+          if (origin) {
+            if (code !== null && origin != "setValue" && lan === "css") {
+              onChange(code);
+            }
+          }
         }
-      });
+      );
     }
     return () => {
       socketRef.current.off(ACTIONS.CODE_CHANGE);
@@ -68,10 +74,6 @@ const EditorCss = props => {
           const { origin } = value;
           const code = editor.getValue();
           setSync([code, origin]);
-          // if (origin != "setValue") console.log(code);
-
-          // console.log("controlled", { value });
-          // console.log("controlled editor", { editor });
         }}
       />
     </div>

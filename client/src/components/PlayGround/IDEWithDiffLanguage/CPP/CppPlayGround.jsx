@@ -1,7 +1,4 @@
 import React, { useState, useEffect, useRef } from "react";
-import useLocalStorage from "../../../hooks/useLocalStorage";
-import { initialCSS, initialHTML, initialJS } from "../initialValues";
-import { initSocket } from "../../../socket";
 import { toast } from "react-hot-toast";
 import {
   Navigate,
@@ -9,25 +6,36 @@ import {
   useNavigate,
   useParams,
 } from "react-router-dom";
-import ACTIONS from "../../../Actions";
-import SideDrawer from "../../SideDrawer/SideDrawer";
-import EditorHtml from "./Editors/EditorHtml";
-import EditorCss from "./Editors/EditorCss";
-import EditorJavascript from "./Editors/EditorJavascript";
-import "./PlayGround.css";
-const PlayGround = () => {
-  const [html, setHtml] = useLocalStorage("html", initialHTML);
-  const [css, setCss] = useLocalStorage("css", initialCSS);
-  const [js, setJs] = useLocalStorage("js", initialJS);
-  const [srcDoc, setSrcDoc] = useState("");
+import CppLanEditor from "./CppLanEditor";
+import "./CppPlayGround.css";
+import SideDrawer from "../../../SideDrawer/SideDrawer";
+import ACTIONS from "../../../../Actions";
+import { initSocket } from "../../../../socket";
+import { initialCpp } from "../../initialValues";
+import useLocalStorage from "../../../../hooks/useLocalStorage";
+import "./CppPlayGround.css";
+import InputEditor from "../Ip_Op_Editor/InputEditor";
+import OutputEditor from "../Ip_Op_Editor/OutputEditor";
+import { useDispatch } from "react-redux";
+import { cppOutput } from "../../../../Redux/Features/compileSlice";
+const CppPlayGround = () => {
+  const [input, setInput] = useLocalStorage("inputCpp", "");
+  const [cpp, setCpp] = useLocalStorage("cpp", initialCpp);
+  // console.log("cpp basic code", cpp);
   const reactNavigate = useNavigate();
   const location = useLocation();
+  const dispatch = useDispatch();
   const { roomId } = useParams();
   const socketRef = useRef(null);
   const [avatars, setAvatars] = useState([]);
+  const handleSubmitCode = () => {
+    dispatch(cppOutput({ cpp, input }));
+    // console.log("cpp code", cpp, input);
+  };
   useEffect(() => {
     const init = async () => {
       socketRef.current = await initSocket();
+      console.log("socketRef.current", socketRef.current);
       socketRef.current.on("connect_error", err => handleErrors(err));
       socketRef.current.on("connect_failed", err => handleErrors(err));
       function handleErrors(e) {
@@ -47,23 +55,19 @@ const PlayGround = () => {
             toast.success(`${username} joined the room`);
           }
           setAvatars(clients);
-          const newCss = JSON.parse(localStorage.getItem("code4sharecss"));
-          const newHtml = JSON.parse(localStorage.getItem("code4sharehtml"));
-          const newJs = JSON.parse(localStorage.getItem("code4sharejs"));
+          const newCpp = JSON.parse(localStorage.getItem("code4sharecpp"));
+          const newCppInput = JSON.parse(
+            localStorage.getItem("code4shareinputCpp")
+          );
           socketRef.current.emit(ACTIONS.SYNC_CODE, {
             socketId,
-            code: newHtml,
-            lan: "html",
+            code: newCpp,
+            lan: "cpp",
           });
           socketRef.current.emit(ACTIONS.SYNC_CODE, {
             socketId,
-            code: newCss,
-            lan: "css",
-          });
-          socketRef.current.emit(ACTIONS.SYNC_CODE, {
-            socketId,
-            code: newJs,
-            lan: "javascript",
+            code: newCppInput,
+            lan: "inputCpp",
           });
         }
       );
@@ -77,6 +81,7 @@ const PlayGround = () => {
     };
     //whenever we have used the listener we have to remove it due to memory leak problem
     init();
+    console.log("useEffect is called");
     return () => {
       //disconnecting from actions that are listening to the socket
       socketRef.current.off(ACTIONS.JOINED);
@@ -87,48 +92,26 @@ const PlayGround = () => {
   if (!location.state) {
     <Navigate to="/" />;
   }
-  useEffect(() => {
-    const timeOut = setTimeout(() => {
-      setSrcDoc(` <html>
-   <body>${html}</body>
-   <style>${css}</style>
-    <script>${js}</script>
-   </html>`);
-    }, 1000);
-    return () => clearTimeout(timeOut);
-  }, [html, css, js]);
   return (
     <>
       <div>
         <div className="pane top-pane">
-          <EditorHtml
-            value={html}
-            onChange={setHtml}
+          <CppLanEditor
+            value={cpp}
+            onChange={setCpp}
             socketRef={socketRef}
             roomId={roomId}
-          />
-          <EditorCss
-            value={css}
-            onChange={setCss}
-            socketRef={socketRef}
-            roomId={roomId}
-          />
-          <EditorJavascript
-            value={js}
-            onChange={setJs}
-            socketRef={socketRef}
-            roomId={roomId}
+            onCodeSubmit={handleSubmitCode}
           />
         </div>
-        <div className="pane">
-          <iframe
-            srcDoc={srcDoc}
-            title="output"
-            sandbox="allow-scripts"
-            frameBorder="0"
-            width="100%"
-            height="100%"
+        <div className="center_textArea">
+          <InputEditor
+            value={input}
+            onChange={setInput}
+            roomId={roomId}
+            socketRef={socketRef}
           />
+          <OutputEditor />
         </div>
       </div>
       <div>
@@ -138,4 +121,4 @@ const PlayGround = () => {
   );
 };
 
-export default PlayGround;
+export default CppPlayGround;

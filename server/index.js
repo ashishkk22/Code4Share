@@ -40,9 +40,13 @@ io.on("connection", socket => {
   socket.on(ACTIONS.CODE_CHANGE, ({ roomId, code, origin, lan }) => {
     socket.in(roomId).emit(ACTIONS.CODE_CHANGE, { code, origin, lan });
   });
-  // socket.on(ACTIONS.SYNC_CODE, ({ socketId, code, lan }) => {
-  //   (socketId).emit(ACTIONS.CODE_CHANGE, { code, lan });
-  // });
+  socket.on(ACTIONS.SYNC_CODE, ({ socketId, code, lan }) => {
+    io.to(socketId).emit(ACTIONS.CODE_CHANGE, {
+      code,
+      lan,
+      Main: "code4share",
+    });
+  });
 
   //before socket disconnect completely we will get this lifecycle hook or we can say that event
   //and this event is sended to the server and the server will send it to all the clients

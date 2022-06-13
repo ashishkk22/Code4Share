@@ -14,10 +14,12 @@ import {
   ExitToApp,
   ContentCopy,
 } from "@mui/icons-material";
-import "./temp.css";
+import "./SideDrawer.css";
 import toast from "react-hot-toast";
 import AvatarsForPlayGround from "../Avatar/AvatarsForPlayGround";
-export default function Temp({ roomId, clients }) {
+import { useNavigate } from "react-router-dom";
+export default function SideDrawer({ roomId, clients }) {
+  const navigate = useNavigate();
   const [state, setState] = React.useState({
     right: false,
   });
@@ -39,7 +41,9 @@ export default function Temp({ roomId, clients }) {
       toast.error("Room Id copy failed");
     }
   };
-  console.log("temp is called");
+  const leaveRoom = () => {
+    navigate("/playground");
+  };
   return (
     <div>
       <React.Fragment>
@@ -57,7 +61,7 @@ export default function Temp({ roomId, clients }) {
           }}
         >
           <Fab color="primary" aria-label="add">
-            <FilterAlt sx={{ color: "#ffffff" }} />
+            <FilterAlt sx={{ color: "#fff" }} />
           </Fab>
         </Tooltip>
 
@@ -137,6 +141,7 @@ export default function Temp({ roomId, clients }) {
                   marginLeft: "10px",
                   marginRight: "10px",
                 }}
+                onClick={leaveRoom}
               >
                 <ExitToApp sx={{ mr: 1, color: "#ffffff" }} />
                 Leave

@@ -47,7 +47,6 @@ const Add = () => {
   const [optionValue, setOptionValue] = useState("html/css/js");
   const [username, setUsername] = useState("");
   const [roomId, setRoomId] = useState("");
-  console.log(optionValue);
   const [open, setOpen] = useState(false);
   const createNewRoom = e => {
     e.preventDefault();

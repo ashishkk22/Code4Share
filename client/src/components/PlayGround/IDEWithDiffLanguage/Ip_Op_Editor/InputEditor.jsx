@@ -1,17 +1,12 @@
 import React, { useState, useRef } from "react";
 import "codemirror/lib/codemirror.css";
 import "codemirror/theme/dracula.css";
-import "codemirror/mode/xml/xml";
-import "codemirror/mode/javascript/javascript";
-import "codemirror/mode/css/css";
-import "codemirror/addon/edit/closetag";
-import "codemirror/addon/edit/closebrackets";
 import { Controlled as ControlledEditor } from "react-codemirror2";
 import { useEffect } from "react";
 import ACTIONS from "../../../../Actions";
-import "../PlayGround.css";
-const EditorHtml = props => {
-  const lan = "html";
+import "./Ip_Op_Editor.css";
+const InputEditor = props => {
+  const lan = "inputCpp";
   const { value, onChange, socketRef, roomId } = props;
   const [sync, setSync] = useState([{ code: "" }, { origin: "" }]);
   const code = sync[0];
@@ -34,11 +29,11 @@ const EditorHtml = props => {
       socketRef.current.on(
         ACTIONS.CODE_CHANGE,
         ({ code, origin, lan, Main }) => {
-          if (Main === "code4share" && lan === "html") {
+          if (Main === "code4share" && lan === "inputCpp") {
             onChange(code);
           }
           if (origin) {
-            if (code !== null && origin != "setValue" && lan === "html") {
+            if (code !== null && origin != "setValue" && lan === "inputCpp") {
               onChange(code);
             }
           }
@@ -50,24 +45,19 @@ const EditorHtml = props => {
     };
   }, [socketRef.current]);
   return (
-    <div className={`editor-container`}>
-      <div className="center-div">
-        <div className="editor-title">HTML</div>
-      </div>
+    <div className={`_editor-container`}>
+      <div className="_editor-tt">Input</div>
       <ControlledEditor
         onBeforeChange={(editor, data, value) => {
           onChange(value);
         }}
         value={value}
-        className="code-mirror-wrapper"
+        className="_code-mirror-wrapper"
         options={{
           lineWrapping: true,
           lint: true,
-          mode: "xml",
           lineNumbers: true,
           theme: "dracula",
-          autoCloseTags: true,
-          autoCloseBrackets: true,
         }}
         onChange={(editor, value) => {
           const { origin } = value;
@@ -79,4 +69,4 @@ const EditorHtml = props => {
   );
 };
 
-export default EditorHtml;
+export default InputEditor;

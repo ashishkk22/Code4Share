@@ -12,10 +12,11 @@ import CssBaseline from "@mui/material/CssBaseline";
 import PlayGround from "./components/PlayGround/WebEditor/PlayGroundWebEditor";
 import OptionPage from "./components/PlayGround/OptionPage/OptionPage";
 import { Toaster } from "react-hot-toast";
-import CppLanguage from "./components/PlayGround/IDEWithDiffLanguage/CppLanguage";
-import JavascriptLanguage from "./components/PlayGround/IDEWithDiffLanguage/JavascriptLanguage";
-import JavaLanguage from "./components/PlayGround/IDEWithDiffLanguage/JavaLanguage";
-import PythonLanguage from "./components/PlayGround/IDEWithDiffLanguage/PythonLanguage";
+import CppLanEditor from "./components/PlayGround/IDEWithDiffLanguage/CPP/CppLanEditor";
+import JavascriptLanguage from "./components/PlayGround/IDEWithDiffLanguage/Javascript/JavascriptLanguage";
+import JavaLanguage from "./components/PlayGround/IDEWithDiffLanguage/Java/JavaLanguage";
+import PythonLanguage from "./components/PlayGround/IDEWithDiffLanguage/Python/PythonLanguage";
+import CppPlayGround from "./components/PlayGround/IDEWithDiffLanguage/CPP/CppPlayGround";
 
 function App() {
   return (
@@ -40,7 +41,7 @@ function App() {
             <Route path="/signin" element={<SignIn />}></Route>
             <Route path="/playground" element={<OptionPage />}></Route>
             <Route path="/webEditor/:roomId" element={<PlayGround />}></Route>
-            <Route path="/IDEcpp/:roomId" element={<CppLanguage />}></Route>
+            <Route path="/IDEcpp/:roomId" element={<CppPlayGround />}></Route>
             <Route
               path="/IDEjs/:roomId"
               element={<JavascriptLanguage />}

@@ -1,18 +1,18 @@
 import React, { useState, useRef } from "react";
 import "codemirror/lib/codemirror.css";
 import "codemirror/theme/dracula.css";
-import "codemirror/mode/xml/xml";
-import "codemirror/mode/javascript/javascript";
-import "codemirror/mode/css/css";
+import "codemirror/mode/clike/clike";
 import "codemirror/addon/edit/closetag";
 import "codemirror/addon/edit/closebrackets";
 import { Controlled as ControlledEditor } from "react-codemirror2";
 import { useEffect } from "react";
 import ACTIONS from "../../../../Actions";
-import "../PlayGround.css";
-const EditorHtml = props => {
-  const lan = "html";
-  const { value, onChange, socketRef, roomId } = props;
+import "./CppPlayGround.css";
+import { Button, Fab } from "@mui/material";
+import { PlayArrow } from "@mui/icons-material";
+const CppLanEditor = props => {
+  const lan = "cpp";
+  const { value, onChange, socketRef, roomId, onCodeSubmit } = props;
   const [sync, setSync] = useState([{ code: "" }, { origin: "" }]);
   const code = sync[0];
   const origin = sync[1];
@@ -34,11 +34,11 @@ const EditorHtml = props => {
       socketRef.current.on(
         ACTIONS.CODE_CHANGE,
         ({ code, origin, lan, Main }) => {
-          if (Main === "code4share" && lan === "html") {
+          if (Main === "code4share" && lan === "cpp") {
             onChange(code);
           }
           if (origin) {
-            if (code !== null && origin != "setValue" && lan === "html") {
+            if (code !== null && origin != "setValue" && lan === "cpp") {
               onChange(code);
             }
           }
@@ -52,7 +52,20 @@ const EditorHtml = props => {
   return (
     <div className={`editor-container`}>
       <div className="center-div">
-        <div className="editor-title">HTML</div>
+        <div className="editor-tt">C++ PlayGround</div>
+        <Button
+          variant="contained"
+          sx={{
+            backgroundColor: "#fff",
+            "&:hover": {
+              backgroundColor: "#e5b962",
+            },
+          }}
+          onClick={onCodeSubmit}
+        >
+          <PlayArrow sx={{ mr: 1 }} />
+          RUN
+        </Button>
       </div>
       <ControlledEditor
         onBeforeChange={(editor, data, value) => {
@@ -63,7 +76,7 @@ const EditorHtml = props => {
         options={{
           lineWrapping: true,
           lint: true,
-          mode: "xml",
+          mode: "clike",
           lineNumbers: true,
           theme: "dracula",
           autoCloseTags: true,
@@ -79,4 +92,4 @@ const EditorHtml = props => {
   );
 };
 
-export default EditorHtml;
+export default CppLanEditor;

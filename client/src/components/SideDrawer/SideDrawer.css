@@ -5,14 +5,13 @@
 }
 .clientsList{
     display: flex;
-    align-items: center;
+    margin-top:"15px";
     flex-wrap: wrap;
     gap: 20px;
 }
 .centerPeople{
     display: flex;
     justify-content: center;
-    align-items: center;
     margin-left: 20px;
     margin-right: 20px;
 }
