@@ -4,6 +4,21 @@ const http = require("http");
 const { Server } = require("socket.io");
 const ACTIONS = require("./Actions");
 const server = http.createServer(app);
+const morgan = require("morgan");
+const cookieParser = require("cookie-parser");
+const cors = require("cors");
+const compileRouter = require("./routers/compileRouter");
+
+require("dotenv").config();
+const corsOptions = {
+  origin: process.env.CLIENT_LINK,
+  credentials: true,
+};
+app.use(cookieParser());
+app.use(cors(corsOptions));
+
+app.use(morgan("dev"));
+app.use(express.json());
 
 const io = new Server(server);
 const PORT = process.env.PORT || 5000;
@@ -38,7 +53,10 @@ io.on("connection", socket => {
   });
 
   socket.on(ACTIONS.CODE_CHANGE, ({ roomId, code, origin, lan }) => {
-    socket.in(roomId).emit(ACTIONS.CODE_CHANGE, { code, origin, lan });
+    socket.to(roomId).emit(ACTIONS.CODE_CHANGE, { code, origin, lan });
+  });
+  socket.on(ACTIONS.OUTPUT_CHANGE, ({ roomId, stderr, stdout, lan }) => {
+    socket.to(roomId).emit(ACTIONS.OUTPUT_CHANGE, { stderr, stdout, lan });
   });
   socket.on(ACTIONS.SYNC_CODE, ({ socketId, code, lan }) => {
     io.to(socketId).emit(ACTIONS.CODE_CHANGE, {
@@ -47,7 +65,13 @@ io.on("connection", socket => {
       Main: "code4share",
     });
   });
-
+  socket.on(ACTIONS.OUTPUT_SYNC, ({ socketId, stderr, stdout, lan }) => {
+    io.to(socketId).emit(ACTIONS.OUTPUT_CHANGE, {
+      stderr,
+      stdout,
+      lan,
+    });
+  });
   //before socket disconnect completely we will get this lifecycle hook or we can say that event
   //and this event is sended to the server and the server will send it to all the clients
   //this event is send by the client to server that client is disconnecting
@@ -67,3 +91,9 @@ io.on("connection", socket => {
 server.listen(PORT, () => {
   console.log("Listening on port `" + PORT + "`");
 });
+
+app.get("/", (req, res) => {
+  res.send("Hello World");
+});
+
+app.use("/compile", compileRouter);

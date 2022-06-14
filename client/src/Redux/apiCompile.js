@@ -1,10 +1,13 @@
 import axios from "axios";
 const API = axios.create({
-  baseURL: "https://codex-api.herokuapp.com/",
+  // baseURL: "https://codex-api.herokuapp.com/",
+  baseURL: process.env.REACT_APP_BACKEND_URL,
+  withCredentials: true,
   crossorigin: true,
   headers: {
-    "Content-Type": "application/x-www-form-urlencoded",
+    "Content-type": "application/json",
+    Accept: "application/json",
   },
 });
 
-export const compileCpp = data => API.post("/", data);
+export const compileCpp = data => API.post("/compile/cpp", data);

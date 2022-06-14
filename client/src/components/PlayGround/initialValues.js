@@ -108,6 +108,7 @@ let initialPython = `# Online Python compiler (interpreter) to run Python online
 # Write Python 3 code in this online editor and run it.
 print("Hello world")
 `;
+let initialOutput = `//output is going to display here`;
 export {
   initialHTML,
   initialCSS,
@@ -116,4 +117,5 @@ export {
   initialJava,
   initialJavascript,
   initialPython,
+  initialOutput,
 };

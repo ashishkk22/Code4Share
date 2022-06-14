@@ -11,16 +11,21 @@ import "./CppPlayGround.css";
 import SideDrawer from "../../../SideDrawer/SideDrawer";
 import ACTIONS from "../../../../Actions";
 import { initSocket } from "../../../../socket";
-import { initialCpp } from "../../initialValues";
+import { initialCpp, initialOutput } from "../../initialValues";
 import useLocalStorage from "../../../../hooks/useLocalStorage";
 import "./CppPlayGround.css";
 import InputEditor from "./Ip_Op_Editor/InputEditor";
 import OutputEditor from "./Ip_Op_Editor/OutputEditor";
-import { useDispatch } from "react-redux";
+import { useDispatch, useSelector } from "react-redux";
 import { cppOutput } from "../../../../Redux/Features/compileSlice";
 const CppPlayGround = () => {
   const [input, setInput] = useLocalStorage("inputCpp", "");
   const [cpp, setCpp] = useLocalStorage("cpp", initialCpp);
+  const [editorOutput, setEditorOutput] = useLocalStorage(
+    "outputCpp",
+    initialOutput
+  );
+  console.log(initialOutput, "fire hai main");
   // console.log("cpp basic code", cpp);
   const reactNavigate = useNavigate();
   const location = useLocation();
@@ -29,8 +34,7 @@ const CppPlayGround = () => {
   const socketRef = useRef(null);
   const [avatars, setAvatars] = useState([]);
   const handleSubmitCode = () => {
-    dispatch(cppOutput({ cpp, input }));
-    // console.log("cpp code", cpp, input);
+    dispatch(cppOutput());
   };
   useEffect(() => {
     const init = async () => {
@@ -68,6 +72,14 @@ const CppPlayGround = () => {
             socketId,
             code: newCppInput,
             lan: "inputCpp",
+          });
+          const newCppOutput = JSON.parse(
+            localStorage.getItem("code4shareoutputCpp")
+          );
+          socketRef.current.emit(ACTIONS.OUTPUT_SYNC, {
+            socketId,
+            stdout: newCppOutput,
+            lan: "outputCpp",
           });
         }
       );
@@ -111,7 +123,12 @@ const CppPlayGround = () => {
             roomId={roomId}
             socketRef={socketRef}
           />
-          <OutputEditor />
+          <OutputEditor
+            editorOutput={editorOutput}
+            setEditorOutput={setEditorOutput}
+            roomId={roomId}
+            socketRef={socketRef}
+          />
         </div>
       </div>
       <div>

@@ -14,7 +14,7 @@ import { Toaster } from "react-hot-toast";
 import CppPlayGround from "./components/PlayGround/IDEWithDiffLanguage/CPP/CppPlayGround";
 import JavaPlayGround from "./components/PlayGround/IDEWithDiffLanguage/Java/JavaPlayGround";
 import JavascriptPlayGround from "./components/PlayGround/IDEWithDiffLanguage/Javascript/JavascriptPlayGround";
-import PythonPlayGround from "./components/PlayGround/IDEWithDiffLanguage/Python/CppPlayGround";
+import PythonPlayGround from "./components/PlayGround/IDEWithDiffLanguage/Python/PythonPlayGround";
 
 function App() {
   return (
