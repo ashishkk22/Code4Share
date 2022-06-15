@@ -8,18 +8,54 @@ import { CircularProgress, Backdrop } from "@mui/material";
 import { PlayArrow } from "@mui/icons-material";
 import "./Ip_Op_Editor.css";
 import { useSelector } from "react-redux";
+import ACTIONS from "../../../../../Actions";
+import useLocalStorage from "../../../../../hooks/useLocalStorage";
+import { initialOutput } from "../../../initialValues";
 const OutputEditor = props => {
-  const { loading, error, output } = useSelector(state => ({
+  const { roomId, socketRef } = props;
+  const [editorOutput, setEditorOutput] = useLocalStorage(
+    "outputJavascript",
+    initialOutput
+  );
+  const { stderr, stdout, error, loading } = useSelector(state => ({
     ...state.compile,
   }));
-  const [editorOutput, setEditorOutput] = useState("");
+  const lan = "outputJavascript";
+
+  console.log(editorOutput, "editorOutput");
   useEffect(() => {
-    if (output !== "") {
-      setEditorOutput(output);
-    } else {
-      setEditorOutput(error);
+    async function init() {
+      socketRef.current.emit(ACTIONS.OUTPUT_CHANGE, {
+        roomId,
+        stderr,
+        stdout,
+        lan,
+      });
     }
-  }, [error, output]);
+
+    init();
+    if (stdout !== "") {
+      setEditorOutput(stdout);
+    } else {
+      setEditorOutput(stderr);
+    }
+  }, [stderr, stdout]);
+  useEffect(() => {
+    if (socketRef.current) {
+      socketRef.current.on(ACTIONS.OUTPUT_CHANGE, ({ stderr, stdout, lan }) => {
+        if (lan === "outputJavascript") {
+          if (stdout !== "" && stdout !== undefined) {
+            setEditorOutput(stdout);
+          } else if (stderr !== "" && stderr !== undefined) {
+            setEditorOutput(stderr);
+          }
+        }
+      });
+    }
+    return () => {
+      socketRef.current.off(ACTIONS.OUTPUT_CHANGE);
+    };
+  }, [socketRef.current]);
   return (
     <div className={`_editor-container`}>
       <div className="_center-div">

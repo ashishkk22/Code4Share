@@ -21,11 +21,7 @@ import { cppOutput } from "../../../../Redux/Features/compileSlice";
 const CppPlayGround = () => {
   const [input, setInput] = useLocalStorage("inputCpp", "");
   const [cpp, setCpp] = useLocalStorage("cpp", initialCpp);
-  const [editorOutput, setEditorOutput] = useLocalStorage(
-    "outputCpp",
-    initialOutput
-  );
-  console.log(initialOutput, "fire hai main");
+
   // console.log("cpp basic code", cpp);
   const reactNavigate = useNavigate();
   const location = useLocation();
@@ -123,12 +119,7 @@ const CppPlayGround = () => {
             roomId={roomId}
             socketRef={socketRef}
           />
-          <OutputEditor
-            editorOutput={editorOutput}
-            setEditorOutput={setEditorOutput}
-            roomId={roomId}
-            socketRef={socketRef}
-          />
+          <OutputEditor roomId={roomId} socketRef={socketRef} />
         </div>
       </div>
       <div>

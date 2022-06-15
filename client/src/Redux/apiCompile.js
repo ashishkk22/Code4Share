@@ -11,3 +11,6 @@ const API = axios.create({
 });
 
 export const compileCpp = data => API.post("/compile/cpp", data);
+export const compileJava = data => API.post("/compile/java", data);
+export const compileJavascript = data => API.post("/compile/javascript", data);
+export const compilePython = data => API.post("/compile/python", data);

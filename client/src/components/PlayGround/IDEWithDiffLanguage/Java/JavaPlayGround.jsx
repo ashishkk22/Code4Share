@@ -17,7 +17,7 @@ import "./JavaPlayGround.css";
 import InputEditor from "./Ip_Op_Editor/InputEditor";
 import OutputEditor from "./Ip_Op_Editor/OutputEditor";
 import { useDispatch } from "react-redux";
-import { cppOutput } from "../../../../Redux/Features/compileSlice";
+import { javaOutput } from "../../../../Redux/Features/compileSlice";
 const JavaPlayGround = () => {
   const [input, setInput] = useLocalStorage("inputJava", "");
   const [java, setJava] = useLocalStorage("java", initialJava);
@@ -28,7 +28,7 @@ const JavaPlayGround = () => {
   const socketRef = useRef(null);
   const [avatars, setAvatars] = useState([]);
   const handleSubmitCode = () => {
-    dispatch(cppOutput({ java, input }));
+    dispatch(javaOutput({ java, input }));
     // console.log("cpp code", cpp, input);
   };
   useEffect(() => {
@@ -67,6 +67,14 @@ const JavaPlayGround = () => {
             socketId,
             code: newJavaInput,
             lan: "inputJava",
+          });
+          const newJavaOutput = JSON.parse(
+            localStorage.getItem("code4shareoutputJava")
+          );
+          socketRef.current.emit(ACTIONS.OUTPUT_SYNC, {
+            socketId,
+            stdout: newJavaOutput,
+            lan: "outputJava",
           });
         }
       );
@@ -110,7 +118,7 @@ const JavaPlayGround = () => {
             roomId={roomId}
             socketRef={socketRef}
           />
-          <OutputEditor />
+          <OutputEditor roomId={roomId} socketRef={socketRef} />
         </div>
       </div>
       <div>

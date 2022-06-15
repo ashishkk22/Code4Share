@@ -60,7 +60,7 @@ const EditorJavascript = props => {
     };
   }, [socketRef.current]);
   return (
-    <div className={`editor-container`}>
+    <div className={`editor-containerHCJ`}>
       <div className="center-div">
         <div className="editor-title">JS</div>
       </div>

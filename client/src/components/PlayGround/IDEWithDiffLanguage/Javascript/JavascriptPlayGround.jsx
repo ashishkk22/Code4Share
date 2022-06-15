@@ -16,7 +16,7 @@ import "./JavascriptPlayGround.css";
 import InputEditor from "./Ip_Op_Editor/InputEditor";
 import OutputEditor from "./Ip_Op_Editor/OutputEditor";
 import { useDispatch } from "react-redux";
-import { cppOutput } from "../../../../Redux/Features/compileSlice";
+import { javascriptOutput } from "../../../../Redux/Features/compileSlice";
 const JavascriptPlayGround = () => {
   const [input, setInput] = useLocalStorage("inputJavascript", "");
   const [javascript, setJavascript] = useLocalStorage(
@@ -31,7 +31,7 @@ const JavascriptPlayGround = () => {
   const socketRef = useRef(null);
   const [avatars, setAvatars] = useState([]);
   const handleSubmitCode = () => {
-    dispatch(cppOutput({ javascript, input }));
+    dispatch(javascriptOutput({ javascript, input }));
     // console.log("cpp code", cpp, input);
   };
   useEffect(() => {
@@ -72,6 +72,14 @@ const JavascriptPlayGround = () => {
             socketId,
             code: newJavascriptInput,
             lan: "inputJavascript",
+          });
+          const newJavascriptOutput = JSON.parse(
+            localStorage.getItem("code4shareoutputJavascript")
+          );
+          socketRef.current.emit(ACTIONS.OUTPUT_SYNC, {
+            socketId,
+            stdout: newJavascriptOutput,
+            lan: "outputCpp",
           });
         }
       );
@@ -115,7 +123,7 @@ const JavascriptPlayGround = () => {
             roomId={roomId}
             socketRef={socketRef}
           />
-          <OutputEditor />
+          <OutputEditor roomId={roomId} socketRef={socketRef} />
         </div>
       </div>
       <div>

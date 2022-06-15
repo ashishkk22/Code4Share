@@ -16,7 +16,7 @@ import useLocalStorage from "../../../../hooks/useLocalStorage";
 import InputEditor from "./Ip_Op_Editor/InputEditor";
 import OutputEditor from "./Ip_Op_Editor/OutputEditor";
 import { useDispatch } from "react-redux";
-import { cppOutput } from "../../../../Redux/Features/compileSlice";
+import { pythonOutput } from "../../../../Redux/Features/compileSlice";
 const PythonPlayGround = () => {
   const [input, setInput] = useLocalStorage("inputPython", "");
   const [python, setPython] = useLocalStorage("python", initialPython);
@@ -28,7 +28,7 @@ const PythonPlayGround = () => {
   const socketRef = useRef(null);
   const [avatars, setAvatars] = useState([]);
   const handleSubmitCode = () => {
-    dispatch(cppOutput({ python, input }));
+    dispatch(pythonOutput({ python, input }));
     // console.log("cpp code", cpp, input);
   };
   useEffect(() => {
@@ -69,6 +69,14 @@ const PythonPlayGround = () => {
             socketId,
             code: newPythonInput,
             lan: "inputPython",
+          });
+          const newPythonOutput = JSON.parse(
+            localStorage.getItem("code4shareoutputPython")
+          );
+          socketRef.current.emit(ACTIONS.OUTPUT_SYNC, {
+            socketId,
+            stdout: newPythonOutput,
+            lan: "outputCpp",
           });
         }
       );
@@ -112,7 +120,7 @@ const PythonPlayGround = () => {
             roomId={roomId}
             socketRef={socketRef}
           />
-          <OutputEditor />
+          <OutputEditor roomId={roomId} socketRef={socketRef} />
         </div>
       </div>
       <div>

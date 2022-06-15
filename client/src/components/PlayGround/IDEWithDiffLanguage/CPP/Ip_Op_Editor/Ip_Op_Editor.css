@@ -39,9 +39,9 @@
 }
 
 @media (max-width: 600px) {
-  .CodeMirror{
+ ._code-mirror-wrapper .CodeMirror{
     height: 100% !important;
-    max-height: 50vh;
+    max-height: 17vh;
    max-width: 100vw;
 }
 }

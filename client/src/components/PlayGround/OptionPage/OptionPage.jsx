@@ -164,7 +164,7 @@ const Add = () => {
                 color="primary_text"
                 onChange={e => setOptionValue(e.target.value)}
               >
-                <MenuItem value={"html/css/js"}>HTML/CSS/JS</MenuItem>
+                <MenuItem value={"html/css/js"}>HTML/CSS/JAVASCRIPT</MenuItem>
                 <MenuItem value={"c++"}>C++</MenuItem>
                 <MenuItem value={"javascript"}>Javascript</MenuItem>
                 <MenuItem value={"java"}>Java</MenuItem>

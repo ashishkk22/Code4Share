@@ -12,7 +12,11 @@ import ACTIONS from "../../../../../Actions";
 import useLocalStorage from "../../../../../hooks/useLocalStorage";
 import { initialOutput } from "../../../initialValues";
 const OutputEditor = props => {
-  const { roomId, socketRef, editorOutput, setEditorOutput } = props;
+  const { roomId, socketRef } = props;
+  const [editorOutput, setEditorOutput] = useLocalStorage(
+    "outputCpp",
+    initialOutput
+  );
   const { stderr, stdout, error, loading } = useSelector(state => ({
     ...state.compile,
   }));

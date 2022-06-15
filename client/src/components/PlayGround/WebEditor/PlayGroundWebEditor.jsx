@@ -100,7 +100,7 @@ const PlayGround = () => {
   return (
     <>
       <div>
-        <div className="pane top-pane">
+        <div className="paneHCJ top-paneHCJ">
           <EditorHtml
             value={html}
             onChange={setHtml}
@@ -120,7 +120,7 @@ const PlayGround = () => {
             roomId={roomId}
           />
         </div>
-        <div className="pane">
+        <div className="paneHCJ">
           <iframe
             srcDoc={srcDoc}
             title="output"
