@@ -53,7 +53,7 @@ export default function SideDrawer({ roomId, clients }) {
           sx={{
             position: "fixed",
             bottom: 15,
-            left: { xs: "calc(50% - 25px)", md: 30 },
+            left: { xs: 30, md: 30 },
             backgroundColor: "#ffce6d",
             "&:hover": {
               backgroundColor: "#e5b962",

@@ -8,7 +8,8 @@ const morgan = require("morgan");
 const cookieParser = require("cookie-parser");
 const cors = require("cors");
 const compileRouter = require("./routers/compileRouter");
-
+const mongoose = require("mongoose");
+const authRouter = require("./routers/authRouter");
 require("dotenv").config();
 const corsOptions = {
   origin: process.env.CLIENT_LINK,
@@ -19,6 +20,20 @@ app.use(cors(corsOptions));
 
 app.use(morgan("dev"));
 app.use(express.json());
+
+const db_link = process.env.DB_LINK;
+
+mongoose
+  .connect(db_link, {
+    useNewUrlParser: true,
+    useUnifiedTopology: true,
+  })
+  .then(function (db) {
+    console.log("db is connected");
+  })
+  .catch(function (err) {
+    console.log(err);
+  });
 
 const io = new Server(server);
 const PORT = process.env.PORT || 5000;
@@ -97,3 +112,4 @@ app.get("/", (req, res) => {
 });
 
 app.use("/compile", compileRouter);
+app.use("/user", authRouter);

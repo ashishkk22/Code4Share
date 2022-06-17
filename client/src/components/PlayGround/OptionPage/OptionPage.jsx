@@ -1,13 +1,4 @@
-import {
-  Add as AddIcon,
-  DateRange,
-  Delete,
-  EmojiEmotions,
-  Image,
-  PersonAdd,
-  PersonAddAlt,
-  VideoCameraBack,
-} from "@mui/icons-material";
+import { Add as AddIcon } from "@mui/icons-material";
 import {
   Button,
   Fab,
@@ -31,6 +22,7 @@ import React, { useEffect, useState } from "react";
 import { Link, useNavigate } from "react-router-dom";
 import toast from "react-hot-toast";
 import "./OptionPage.css";
+import Cards from "./Cards";
 const StyledModal = styled(Modal)({
   display: "flex",
   alignItems: "center",
@@ -103,14 +95,34 @@ const Add = () => {
   };
   return (
     <div style={{ minHeight: "90vh", backgroundColor: "#282a36" }}>
-      <div className="center-div">
+      <div className="center-divOption">
         <div className="playGroundWrapper">
           <h1 className="heading">PlayGrounds</h1>
           <p className="">
-            Playgrounds by Code4Share are free in-browser IDE environments. Use
-            them to code collaboratively with your friends, without downloading
-            anything on your computer.
+            <Typography
+              gutterBottom
+              variant="h6"
+              component="p"
+              sx={{ color: "rgb(178 186 194)", textAlign: "center" }}
+            >
+              Playgrounds by Code4Share are free in-browser IDE environments.
+              Use them to code collaboratively with your friends, without
+              downloading anything on your computer.
+            </Typography>
           </p>
+        </div>
+        <div>
+          <Typography
+            gutterBottom
+            variant="h6"
+            component="p"
+            sx={{ color: "#fff", marginTop: "15px" }}
+          >
+            Start coding in your favorite language
+          </Typography>
+        </div>
+        <div className="cards_main">
+          <Cards />
         </div>
       </div>
       <Tooltip
@@ -119,7 +131,7 @@ const Add = () => {
         sx={{
           position: "fixed",
           bottom: 15,
-          left: { xs: "calc(50% - 25px)", md: 30 },
+          left: { xs: 30, md: 30 },
           backgroundColor: "#ffce6d",
           "&:hover": {
             backgroundColor: "#e5b962",

@@ -6,8 +6,12 @@
     width: 70%;
     height: 100%;
 }
-.center-div{
+.cards_main{
+    margin: 20px;
+}
+.center-divOption{
     display: flex;
+    flex-direction: column;
     justify-content: center;
     align-items: center;
 }
