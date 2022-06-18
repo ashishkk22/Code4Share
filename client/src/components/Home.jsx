@@ -176,43 +176,6 @@ const Home = () => {
               <Cards />
               <div style={{ marginBottom: "100px" }}></div>
             </div>
-            {/* <div>
-              <Typography
-                gutterBottom
-                component="p"
-                sx={{
-                  color: "#fff",
-                  paddingTop: "50px",
-                  textAlign: "center",
-                  fontSize: {
-                    lg: 37,
-                    md: 37,
-                    sm: 37,
-                    xs: 37,
-                  },
-                }}
-              >
-                Features
-              </Typography>
-            </div> */}
-            {/* <Card
-              sx={{
-                width: 150,
-                height: 150,
-                background: "#1c1e29",
-                margin: "1rem",
-              }}
-            >
-              <Typography
-                gutterBottom
-                variant="h5"
-                component="p"
-                sx={{ color: "rgb(178 186 194)", textAlign: "center" }}
-              >
-                Rapid prototyping Quickly create real, working prototypes. Test
-                ideas earlier and iterate more.
-              </Typography>
-            </Card> */}
           </Box>
         </Container>
       </div>

@@ -10,6 +10,7 @@ const cors = require("cors");
 const compileRouter = require("./routers/compileRouter");
 const mongoose = require("mongoose");
 const authRouter = require("./routers/authRouter");
+const { authMiddleware } = require("./middleware/auth-middleware");
 require("dotenv").config();
 const corsOptions = {
   origin: process.env.CLIENT_LINK,
@@ -57,7 +58,6 @@ io.on("connection", socket => {
     userSocketMap[socket.id] = username;
     socket.join(roomId);
     const clients = getAllConnectedClients(roomId);
-    console.log(clients);
     clients.forEach(({ socketId }) => {
       io.to(socketId).emit(ACTIONS.JOINED, {
         clients,
@@ -111,5 +111,5 @@ app.get("/", (req, res) => {
   res.send("Hello World");
 });
 
-app.use("/compile", compileRouter);
+app.use("/compile", authMiddleware, compileRouter);
 app.use("/user", authRouter);

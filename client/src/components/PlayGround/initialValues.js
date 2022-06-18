@@ -87,7 +87,7 @@ let initialCpp = `// Online C++ compiler to run C++ program online
 
 int main() {
     // Write C++ code here
-    std::cout << "Hello world!";
+    std::cout << "Welcome to Code4Share!";
 
     return 0;
 }`;
@@ -96,7 +96,7 @@ let initialJava = `// Online Java Compiler
 
 class Main {
     public static void main(String[] args) {
-        System.out.println("Hello, World!"); 
+        System.out.println("Welcome to Code4Share!"); 
     }
 }`;
 let initialJavascript = `// Online Javascript Editor for free
@@ -106,9 +106,8 @@ console.log("Welcome to Code4Share!");
 `;
 let initialPython = `# Online Python compiler (interpreter) to run Python online.
 # Write Python 3 code in this online editor and run it.
-print("Hello world")
-`;
-let initialOutput = `//output is going to display here`;
+print("Welcome to Code4Share!")`;
+let initialOutput = `//output goes here`;
 export {
   initialHTML,
   initialCSS,

@@ -23,7 +23,6 @@ const JavascriptPlayGround = () => {
     "javascript",
     initialJavascript
   );
-  // console.log("cpp basic code", cpp);
   const reactNavigate = useNavigate();
   const location = useLocation();
   const dispatch = useDispatch();
@@ -32,16 +31,13 @@ const JavascriptPlayGround = () => {
   const [avatars, setAvatars] = useState([]);
   const handleSubmitCode = () => {
     dispatch(javascriptOutput({ javascript, input }));
-    // console.log("cpp code", cpp, input);
   };
   useEffect(() => {
     const init = async () => {
       socketRef.current = await initSocket();
-      console.log("socketRef.current", socketRef.current);
       socketRef.current.on("connect_error", err => handleErrors(err));
       socketRef.current.on("connect_failed", err => handleErrors(err));
       function handleErrors(e) {
-        console.log("socket error", e);
         toast.error("Socket connection failed, Try again later");
         reactNavigate("/");
       }
@@ -93,7 +89,6 @@ const JavascriptPlayGround = () => {
     };
     //whenever we have used the listener we have to remove it due to memory leak problem
     init();
-    console.log("useEffect is called");
     return () => {
       //disconnecting from actions that are listening to the socket
       socketRef.current.off(ACTIONS.JOINED);

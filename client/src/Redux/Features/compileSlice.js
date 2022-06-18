@@ -1,9 +1,3 @@
-// var data = Qs.stringify({
-//   code: code,
-//   language: "cpp",
-//   input: input,
-// });
-// console.log("data from the slice", data);
 import { createSlice, createAsyncThunk } from "@reduxjs/toolkit";
 import * as api from "../apiCompile";
 import toast from "react-hot-toast";
@@ -12,7 +6,6 @@ export const cppOutput = createAsyncThunk("cpp/output", async () => {
   const input = JSON.parse(localStorage.getItem("code4shareinputCpp"));
   try {
     const res = await api.compileCpp({ input, code, fileName: "main.cpp" });
-    console.log(res.data);
     toast.success("Code Compiled successfully");
     return res.data.data;
   } catch (error) {
@@ -25,7 +18,6 @@ export const javaOutput = createAsyncThunk("cpp/output", async () => {
   const input = JSON.parse(localStorage.getItem("code4shareinputJava"));
   try {
     const res = await api.compileJava({ input, code, fileName: "Main.java" });
-    console.log(res.data);
     toast.success("Code Compiled successfully");
     return res.data.data;
   } catch (error) {
@@ -42,7 +34,6 @@ export const javascriptOutput = createAsyncThunk("cpp/output", async () => {
       code,
       fileName: "Main.js",
     });
-    console.log(res.data);
     toast.success("Code Compiled successfully");
     return res.data.data;
   } catch (error) {
@@ -55,7 +46,6 @@ export const pythonOutput = createAsyncThunk("cpp/output", async () => {
   const input = JSON.parse(localStorage.getItem("code4shareinputPython"));
   try {
     const res = await api.compilePython({ input, code, fileName: "Main.py" });
-    console.log(res.data);
     toast.success("Code Compiled successfully");
     return res.data.data;
   } catch (error) {

@@ -15,8 +15,19 @@ import CppPlayGround from "./components/PlayGround/IDEWithDiffLanguage/CPP/CppPl
 import JavaPlayGround from "./components/PlayGround/IDEWithDiffLanguage/Java/JavaPlayGround";
 import JavascriptPlayGround from "./components/PlayGround/IDEWithDiffLanguage/Javascript/JavascriptPlayGround";
 import PythonPlayGround from "./components/PlayGround/IDEWithDiffLanguage/Python/PythonPlayGround";
-
+import ChangePass from "./components/changePassword/ChangePass";
+import ForgotPass from "./components/forgotPass/ForgotPass";
+import { useEffect } from "react";
+import { isAuthenticated } from "./Redux/Features/authSlice";
+import { useDispatch, useSelector } from "react-redux";
 function App() {
+  const dispatch = useDispatch();
+  const { authenticated } = useSelector(state => ({ ...state.auth }));
+  useEffect(() => {
+    if (!authenticated) {
+      dispatch(isAuthenticated());
+    }
+  }, [authenticated]);
   return (
     <>
       <Toaster
@@ -37,15 +48,32 @@ function App() {
             <Route path="/" element={<Home />}></Route>
             <Route path="/signup" element={<SignUp />}></Route>
             <Route path="/signin" element={<SignIn />}></Route>
-            <Route path="/playground" element={<OptionPage />}></Route>
-            <Route path="/webEditor/:roomId" element={<PlayGround />}></Route>
+            <Route
+              path="/playground"
+              element={authenticated ? <OptionPage /> : <SignIn />}
+            ></Route>
+            <Route
+              path="/webEditor/:roomId"
+              element={authenticated ? <PlayGround /> : <SignIn />}
+            ></Route>
             <Route path="/IDEcpp/:roomId" element={<CppPlayGround />}></Route>
             <Route
               path="/IDEjs/:roomId"
-              element={<JavascriptPlayGround />}
+              element={authenticated ? <JavascriptPlayGround /> : <SignIn />}
             ></Route>
-            <Route path="/IDEjava/:roomId" element={<JavaPlayGround />}></Route>
-            <Route path="/IDEpy/:roomId" element={<PythonPlayGround />}></Route>
+            <Route
+              path="/IDEjava/:roomId"
+              element={authenticated ? <JavaPlayGround /> : <SignIn />}
+            ></Route>
+            <Route
+              path="/IDEpy/:roomId"
+              element={authenticated ? <PythonPlayGround /> : <SignIn />}
+            ></Route>
+            <Route
+              path="/changePass"
+              element={authenticated ? <ChangePass /> : <SignIn />}
+            ></Route>
+            <Route path="/forgotPass" element={<ForgotPass />}></Route>
           </Routes>
           <Footer />
         </BrowserRouter>

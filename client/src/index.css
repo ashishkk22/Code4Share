@@ -23,7 +23,11 @@ code {
     monospace;
 }
 
-
+.CodeMirror * {
+/*          ^
+*/
+  font-size: 20px;
+}
 /* Editor css
 
 .top-pane{

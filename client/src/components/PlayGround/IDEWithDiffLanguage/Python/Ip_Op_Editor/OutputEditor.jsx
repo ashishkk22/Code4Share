@@ -21,8 +21,6 @@ const OutputEditor = props => {
     ...state.compile,
   }));
   const lan = "outputPython";
-
-  console.log(editorOutput, "editorOutput");
   useEffect(() => {
     async function init() {
       socketRef.current.emit(ACTIONS.OUTPUT_CHANGE, {

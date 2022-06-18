@@ -2,8 +2,6 @@ const nodemailer = require("nodemailer");
 
 //to  send the mail based on the different conditions
 module.exports.sendMail = async function sendMail(str, data) {
-  console.log(str, "str");
-  console.log(data, "data email");
   let transporter = nodemailer.createTransport({
     host: "smtp.gmail.com",
     port: 587,
@@ -22,8 +20,9 @@ module.exports.sendMail = async function sendMail(str, data) {
       >
         <h2 style="text-align:"center">Welcome to the Code4Share.</h2>
         <h4>You are officially In ✔</h4>
-        <p style="margin-bottom: 30px;">Pleas enter the sign up OTP to get started</p>
+        <p style="margin-bottom: 30px;">Pleas enter the sign up OTP to get started.</p>
         <h1 style="font-size: 40px; letter-spacing: 2px; text-align:center;">${data.otp}</h1>
+        <p style="margin-top: 15px;">Otp is valid for only 5 minutes. Please don't share the otp with anyone.</p>
    </div>`;
   }
   if (str == "forgotPassword") {
@@ -32,9 +31,10 @@ module.exports.sendMail = async function sendMail(str, data) {
         class="container"
         style="max-width: 90%; margin: auto; padding-top: 20px"
       >
-        <h2 style="text-align:"center"> Code4Share.</h2>
-        <p style="margin-bottom: 30px;">Pleas enter the reset password  OTP to update the password</p>
+        <h2 style="text-align:"center"> Code4Share</h2>
+        <p style="margin-bottom: 30px;">Pleas enter the reset password  OTP to update the password.</p>
         <h1 style="font-size: 40px; letter-spacing: 2px; text-align:center;">${data.otp}</h1>
+         <p style="margin-top: 15px;">Otp is valid for only 5 minutes. Please don't share the otp with anyone.</p>
    </div>`;
   }
   // send mail with defined transport object
@@ -45,7 +45,5 @@ module.exports.sendMail = async function sendMail(str, data) {
     html: Ohtml, // html body
   });
   console.log(info, "info");
-
-  console.log("Message sent: %s", info.messageId);
   console.log("Preview URL: %s", nodemailer.getTestMessageUrl(info));
 };

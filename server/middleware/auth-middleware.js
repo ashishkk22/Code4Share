@@ -9,9 +9,7 @@ module.exports.authMiddleware = async (req, res, next) => {
         message: "Please login first",
       });
     }
-    console.log(TOKEN);
     const { id } = jwt.verify(TOKEN, process.env.JWT_SECRET);
-    console.log(id);
     req.user = await userModel.findById(id).select("-password");
     if (req.user) {
       next();

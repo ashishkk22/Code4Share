@@ -37,22 +37,15 @@ module.exports.userSignUp = async (req, res) => {
     };
     const str = "otp";
     const mailSend = await sendMail(str, emailData);
-    if (mailSend) {
-      console.log(mailSend, "send mail successfully");
-    }
     const forHash = `${email}.${otp}.${expires}`;
     const hash = await bcrypt.hash(forHash, 10);
     const fullHash = `${hash}.${expires}`;
-    console.log(hash, "hash signup");
-    console.log(fullHash, "full hash signup");
-    console.log(forHash, "for hash signup");
     return res.status(200).json({
       message: "please verify you email id with sended otp",
       email,
       fullHash,
     });
   } catch (error) {
-    console.log(error);
     res.status(500).json({
       message: "Internal server error",
     });
@@ -70,29 +63,20 @@ module.exports.verifyUser = async function verifyUser(req, res) {
     let index = fullHash.lastIndexOf(".");
     let hash = fullHash.slice(0, index);
     let expires = fullHash.slice(index + 1);
-    console.log(index, "index");
-    console.log(hash, "hash");
-    console.log(expires, "hash");
     const isExpired = expires < Date.now();
-    console.log(isExpired, "isExpired");
     if (isExpired) {
       return res.status(400).json({
         message: "OTP expired please try again",
       });
     }
     const data = `${email}.${otp}.${expires}`;
-    console.log(email, " otp ", otp, "expires", expires);
-    console.log(data, "data");
     const isValid = await bcrypt.compare(data, hash);
-    console.log(isValid, "newCalcHash");
     if (!isValid) {
       return res.status(400).json({
         message: "OTP is not valid",
       });
     }
-    console.log(email);
     const userRegistered = await userModel.findOne({ email: email });
-    console.log(userRegistered);
     if (!userRegistered) {
       return res.status(400).json({
         message: "User not found",
@@ -153,7 +137,7 @@ module.exports.userSignIn = async function userSignIn(req, res) {
       user.password = "__HIDDEN__";
       return res.status(200).json({
         message: "User signed in successfully",
-        data: user,
+        user,
       });
     } else {
       return res.status(400).json({
@@ -209,17 +193,16 @@ module.exports.changePassword = async function changePassword(req, res) {
 
 //forgot password of user
 module.exports.forgotPassword = async function forgotPassword(req, res) {
-  // console.log(req);
   const { email } = req.body;
-  console.log(email);
   try {
-    const user = await userModel.findOne({ email: email });
+    const user = await userModel
+      .findOne({ email: email })
+      .select("-password -_id");
     if (!user) {
       return res.status(400).json({
         message: "User not found",
       });
     }
-    console.log(user);
     if (user?.activated == false) {
       return res.status(400).json({
         message: "Please verify your email id",
@@ -243,7 +226,6 @@ module.exports.forgotPassword = async function forgotPassword(req, res) {
       fullHash,
     });
   } catch (err) {
-    console.log(err);
     return res.status(500).json({
       message: "Internal server error",
     });
@@ -282,7 +264,6 @@ module.exports.forgotPassVerify = async function forgotPassVerify(req, res) {
     );
     return res.status(200).json({
       message: "Password changed successfully",
-      user,
     });
   } catch (err) {
     return res.status(500).json({
@@ -308,7 +289,7 @@ module.exports.isAuthenticated = async function isAuthenticated(req, res) {
       });
     } else {
       return res.status(201).json({
-        message: "Not registered user",
+        message: "registered user",
         user,
       });
     }

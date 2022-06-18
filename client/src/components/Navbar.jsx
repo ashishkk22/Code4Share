@@ -1,4 +1,5 @@
 import * as React from "react";
+import { useEffect } from "react";
 import {
   AppBar,
   Box,
@@ -13,13 +14,17 @@ import {
   IconButton,
   styled,
 } from "@mui/material";
+import toast from "react-hot-toast";
 import { Adb as AdbIcon, Menu as MenuIcon } from "@mui/icons-material";
-
-import { Link } from "react-router-dom";
+import { Link, useNavigate } from "react-router-dom";
+import { useDispatch, useSelector } from "react-redux";
+import { userLogOut } from "../Redux/Features/authSlice";
 const pages = ["Home", "SingIn", "SignUp", "PlayGrounds"];
 const settings = ["Profile", "Account", "Dashboard", "Logout"];
-
 const Navbar = () => {
+  const { userName, authenticated } = useSelector(state => ({ ...state.auth }));
+  useEffect(() => {}, [authenticated]);
+  useEffect(() => {}, [userName]);
   const RouterLinkH = styled(Link)({
     textDecoration: "none",
     color: "#ffce6d",
@@ -31,6 +36,8 @@ const Navbar = () => {
   const [anchorElNav, setAnchorElNav] = React.useState(null);
   const [anchorElUser, setAnchorElUser] = React.useState(null);
   const nameLogo = "<Code4Share/>";
+  const dispatch = useDispatch();
+  const navigate = useNavigate();
   const handleOpenNavMenu = event => {
     setAnchorElNav(event.currentTarget);
   };
@@ -40,6 +47,9 @@ const Navbar = () => {
 
   const handleCloseNavMenu = () => {
     setAnchorElNav(null);
+  };
+  const onLogout = () => {
+    dispatch(userLogOut({ toast, navigate }));
   };
 
   const handleCloseUserMenu = () => {
@@ -108,16 +118,22 @@ const Navbar = () => {
                   <RouterLink to="/">Home</RouterLink>
                 </Typography>
               </MenuItem>
-              <MenuItem>
-                <Typography textAlign="center">
-                  <RouterLink to="/signin">SignIn</RouterLink>
-                </Typography>
-              </MenuItem>
-              <MenuItem>
-                <Typography textAlign="center">
-                  <RouterLink to="/signup">SignUp</RouterLink>
-                </Typography>
-              </MenuItem>
+              {authenticated ? (
+                <div></div>
+              ) : (
+                <>
+                  <MenuItem>
+                    <Typography textAlign="center">
+                      <RouterLink to="/signin">SignIn</RouterLink>
+                    </Typography>
+                  </MenuItem>
+                  <MenuItem>
+                    <Typography textAlign="center">
+                      <RouterLink to="/signup">SignUp</RouterLink>
+                    </Typography>
+                  </MenuItem>
+                </>
+              )}
               <MenuItem>
                 <Typography textAlign="center">
                   <RouterLink to="/playground">PlayGround</RouterLink>
@@ -164,30 +180,37 @@ const Navbar = () => {
                 Home
               </RouterLink>
             </Button>
-            <Button
-              sx={{
-                my: 2,
-                color: "white",
-                display: "block",
-                fontSize: "16px",
-              }}
-            >
-              <RouterLink to="/signup" style={{ color: "white" }}>
-                SignUp
-              </RouterLink>
-            </Button>
-            <Button
-              sx={{
-                my: 2,
-                color: "white",
-                display: "block",
-                fontSize: "16px",
-              }}
-            >
-              <RouterLink to="/signin" style={{ color: "white" }}>
-                SignIn
-              </RouterLink>
-            </Button>
+            {authenticated ? (
+              <div></div>
+            ) : (
+              <>
+                {" "}
+                <Button
+                  sx={{
+                    my: 2,
+                    color: "white",
+                    display: "block",
+                    fontSize: "16px",
+                  }}
+                >
+                  <RouterLink to="/signup" style={{ color: "white" }}>
+                    SignUp
+                  </RouterLink>
+                </Button>
+                <Button
+                  sx={{
+                    my: 2,
+                    color: "white",
+                    display: "block",
+                    fontSize: "16px",
+                  }}
+                >
+                  <RouterLink to="/signin" style={{ color: "white" }}>
+                    SignIn
+                  </RouterLink>
+                </Button>
+              </>
+            )}
             <Button
               sx={{
                 my: 2,
@@ -201,39 +224,46 @@ const Navbar = () => {
               </RouterLink>
             </Button>
           </Box>
-
-          <Box sx={{ flexGrow: 0 }}>
-            <Tooltip title="Open settings">
-              <IconButton onClick={handleOpenUserMenu} sx={{ p: 0 }}>
-                <Avatar
-                  alt="Ashish Kachhadiya"
-                  src="/static/images/avatar/2.jpg"
-                />
-              </IconButton>
-            </Tooltip>
-            <Menu
-              sx={{ mt: "45px" }}
-              id="menu-appbar"
-              anchorEl={anchorElUser}
-              anchorOrigin={{
-                vertical: "top",
-                horizontal: "right",
-              }}
-              keepMounted
-              transformOrigin={{
-                vertical: "top",
-                horizontal: "right",
-              }}
-              open={Boolean(anchorElUser)}
-              onClose={handleCloseUserMenu}
-            >
-              {settings.map(setting => (
-                <MenuItem key={setting} onClick={handleCloseUserMenu}>
-                  <Typography textAlign="center">{setting}</Typography>
+          {authenticated ? (
+            <Box sx={{ flexGrow: 0 }}>
+              <Tooltip title="Open settings">
+                <IconButton onClick={handleOpenUserMenu} sx={{ p: 0 }}>
+                  <Avatar alt={userName} src="/static/images/avatar/2.jpg" />
+                </IconButton>
+              </Tooltip>
+              <Menu
+                sx={{ mt: "45px", color: "#1c1e29" }}
+                id="menu-appbar"
+                anchorEl={anchorElUser}
+                anchorOrigin={{
+                  vertical: "top",
+                  horizontal: "right",
+                }}
+                keepMounted
+                transformOrigin={{
+                  vertical: "top",
+                  horizontal: "right",
+                }}
+                open={Boolean(anchorElUser)}
+                onClose={handleCloseUserMenu}
+              >
+                <MenuItem>
+                  <RouterLink
+                    to="/changePass"
+                    textAlign="center"
+                    style={{ color: "white" }}
+                  >
+                    Change password
+                  </RouterLink>
                 </MenuItem>
-              ))}
-            </Menu>
-          </Box>
+                <MenuItem onClick={onLogout}>
+                  <Typography textAlign="center">Logout</Typography>
+                </MenuItem>
+              </Menu>
+            </Box>
+          ) : (
+            <></>
+          )}
         </Toolbar>
       </Container>
     </AppBar>
